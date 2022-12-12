@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(check_compiler_flag LANGUAGES CXX)
+project(check_compiler_flag
+  LANGUAGES CXX
+)
 
 # we set the C++ standard
 set(CMAKE_CXX_STANDARD 14)
@@ -11,11 +13,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(asan-example asan-example.cpp)
 
 # we set some generic compiler flags
-target_compile_options(asan-example
-  PUBLIC
-    "-g3"
-    "-O1"
-  )
+target_compile_options(asan-example PUBLIC "-g3" "-O1")
 
 include(CheckCXXCompilerFlag)
 
@@ -28,13 +26,7 @@ unset(CMAKE_REQUIRED_FLAGS)
 if(asan_works)
   # we transform ASAN_FLAGS to ;-separated list
   string(REPLACE " " ";" _asan_flags ${ASAN_FLAGS})
-  target_compile_options(asan-example
-    PUBLIC
-      ${_asan_flags}
-    )
+  target_compile_options(asan-example PUBLIC ${_asan_flags})
   # this is needed for the linker to properly handle the sanitizer
-  target_link_libraries(asan-example
-    PUBLIC
-      ${_asan_flags}
-    )
+  target_link_libraries(asan-example PUBLIC ${_asan_flags})
 endif()

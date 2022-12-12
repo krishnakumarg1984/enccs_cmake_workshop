@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.18)
 
 # the project uses both C++ and C
-project(check_source_runs LANGUAGES CXX C)
+project(check_source_runs
+  LANGUAGES CXX C
+)
 
 # we set the C++ standard
 set(CMAKE_CXX_STANDARD 14)
@@ -23,7 +25,7 @@ include(CheckCSourceRuns)
 
 # set the C code to test in a variable
 set(_test_uuid
-  "
+"
 #include <uuid/uuid.h>
 
 int main(int argc, char * argv[]) {
@@ -33,7 +35,8 @@ int main(int argc, char * argv[]) {
 
   return 0;
 }
-  ")
+  "
+)
 
 set(CMAKE_REQUIRED_LIBRARIES PkgConfig::UUID)
 check_c_source_runs("${_test_uuid}" _runs)
@@ -44,7 +47,4 @@ if(NOT _runs)
 endif()
 
 # we finally link the library to the C++ executable
-target_link_libraries(use-uuid
-  PUBLIC
-    PkgConfig::UUID
-  )
+target_link_libraries(use-uuid PUBLIC PkgConfig::UUID)

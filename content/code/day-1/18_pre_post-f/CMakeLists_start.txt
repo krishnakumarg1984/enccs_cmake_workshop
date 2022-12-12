@@ -21,19 +21,21 @@ add_executable(example)
 target_sources(example PRIVATE example.f90)
 
 add_custom_command(
-  TARGET example
+  TARGET
+  # FIXME add the target name
   PRE_LINK
   COMMAND
-  ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/echo-file.py
-  ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/example.dir/link.txt
+  # FIXME call echo-file.py through Python to read the file CMakeFiles/example.dir/link.txt
+  ${Python_EXECUTABLE} ...
   COMMENT "link line:"
   VERBATIM)
 
 add_custom_command(
-  TARGET example
+  TARGET
+  # FIXME add the target name
   POST_BUILD
   COMMAND
-  ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/static-size.py
-  $<TARGET_FILE:example>
+  # FIXME call static-size.py through Python on the produced executable
+  ${Python_EXECUTABLE} ...
   COMMENT "static size of executable:"
   VERBATIM)

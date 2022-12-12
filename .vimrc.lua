@@ -36,6 +36,7 @@ null_ls.register {
   formatting.black,
   formatting.buf,
   formatting.clang_format,
+  formatting.fprettify,
   formatting.gersemi,
   formatting.protolint,
   formatting.shfmt.with { extra_args = { "-i", "2", "-ci" } },
@@ -49,7 +50,6 @@ null_ls.enable {}
 -- formatting.bibclean,
 -- formatting.brittany,
 -- formatting.format_r, -- needs the 'R' command to be in $PATH
--- formatting.fprettify,
 -- formatting.goformat,
 -- formatting.goimports,
 -- formatting.latexindent,
