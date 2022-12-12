@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(taskloop LANGUAGES CXX)
+project(taskloop
+  LANGUAGES CXX
+)
 
 add_executable(taskloop taskloop.cpp)
 

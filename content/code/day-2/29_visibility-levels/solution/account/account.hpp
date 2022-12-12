@@ -1,15 +1,15 @@
 #pragma once
 
 class Account {
-public:
-  Account();
-  ~Account();
+  public:
+    Account();
+    ~Account();
 
-  void deposit(const double amount);
-  void withdraw(const double amount);
-  double get_balance() const;
+    void deposit(double amount);
+    void withdraw(double amount);
+    [[nodiscard]] double get_balance() const;
 
-private:
-  double balance;
-  bool is_initialized;
+  private:
+    double balance;
+    bool is_initialized;
 };

@@ -2,7 +2,9 @@
 cmake_minimum_required(VERSION 3.18)
 
 # project name and language
-project(mpi-cxx LANGUAGES CXX)
+project(mpi-cxx
+  LANGUAGES CXX
+)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -12,7 +14,4 @@ find_package(MPI REQUIRED COMPONENTS CXX)
 
 add_executable(hello-mpi hello-mpi.cpp)
 
-target_link_libraries(hello-mpi
-  PUBLIC
-    MPI::MPI_CXX
-  )
+target_link_libraries(hello-mpi PUBLIC MPI::MPI_CXX)

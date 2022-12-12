@@ -2,7 +2,9 @@
 cmake_minimum_required(VERSION 3.18)
 
 # project name and supported language
-project(bank LANGUAGES CXX)
+project(bank
+  LANGUAGES CXX
+)
 
 # require C++14
 set(CMAKE_CXX_STANDARD 14)
@@ -14,7 +16,4 @@ add_subdirectory(account)
 
 add_executable(bank bank.cpp)
 
-target_link_libraries(bank
-  PRIVATE
-    account
-  )
+target_link_libraries(bank PRIVATE account)

@@ -1,13 +1,17 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(automata-cxx LANGUAGES CXX)
+project(automata-cxx
+  LANGUAGES CXX
+)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # defines targets and sources
-# FIXME add src folder
+# add src folder
+add_subdirectory(src)
 
 # contains an "external" library we will link to
-# FIXME add external folder
+# add external folder
+add_subdirectory(external)
