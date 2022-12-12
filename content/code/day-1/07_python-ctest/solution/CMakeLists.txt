@@ -2,7 +2,9 @@
 cmake_minimum_required(VERSION 3.18)
 
 # project name and language
-project(hello-ctest LANGUAGES CXX)
+project(hello-ctest
+  LANGUAGES CXX
+)
 
 # require C++14
 set(CMAKE_CXX_STANDARD 14)
@@ -24,28 +26,28 @@ target_link_libraries(cpp_test PRIVATE sum_integers)
 enable_testing()
 
 # define tests
-add_test(
-  NAME cpp_test
-  COMMAND $<TARGET_FILE:cpp_test>
-  )
+add_test(NAME cpp_test COMMAND $<TARGET_FILE:cpp_test>)
 
 # run the main executable through a shell script
 find_program(BASH_EXECUTABLE NAMES bash REQUIRED)
 
 add_test(
   NAME bash_test
-  COMMAND ${BASH_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test.sh $<TARGET_FILE:sum_up>
-  )
+  COMMAND
+  ${BASH_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test.sh
+  $<TARGET_FILE:sum_up>)
 
 # run the main executable through a Python script
 find_package(Python REQUIRED)
 
+# add a long-running test run through test.py
 add_test(
   NAME python_test_long
-  COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test.py --executable $<TARGET_FILE:sum_up>
-  )
+  COMMAND
+  ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test.py --executable $<TARGET_FILE:sum_up>)
 
+# FIXME add another test run through test.py, with options
 add_test(
   NAME python_test_short
-  COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test.py --short --executable $<TARGET_FILE:sum_up>
-  )
+  COMMAND
+  ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test.py --short --executable $<TARGET_FILE:sum_up>)

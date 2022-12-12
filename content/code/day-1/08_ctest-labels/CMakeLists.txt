@@ -2,18 +2,45 @@
 cmake_minimum_required(VERSION 3.18)
 
 # project name
-project(ctest-labels LANGUAGES NONE)
+project(ctest-labels
+  LANGUAGES NONE
+)
 
-# FIXME detect python
-find_package(...)
+# detect python
+find_package(Python REQUIRED)
 
-# FIXME enable testing
+# enable testing
+enable_testing()
 
-# FIXME add tests
-add_test(...)
+# add tests
+add_test(
+  NAME benchmark-a
+  COMMAND
+  ${Python_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/test/benchmark-a.py")
 
-# FIXME set the "quick" label
-set_tests_properties(...)
+add_test(
+  NAME benchmark-b
+  COMMAND
+  ${Python_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/test/benchmark-b.py")
 
-# FIXME set the "long" label
-set_tests_properties(...)
+add_test(
+  NAME feature-a
+  COMMAND ${Python_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/test/feature-a.py")
+
+add_test(
+  NAME feature-b
+  COMMAND ${Python_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/test/feature-b.py")
+
+add_test(
+  NAME feature-c
+  COMMAND ${Python_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/test/feature-c.py")
+
+add_test(
+  NAME feature-d
+  COMMAND ${Python_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/test/feature-d.py")
+
+# set the "quick" label
+set_tests_properties(feature-a feature-b feature-c PROPERTIES LABELS "quick")
+
+# set the "long" label
+set_tests_properties(feature-d benchmark-a benchmark-b PROPERTIES LABELS "long")

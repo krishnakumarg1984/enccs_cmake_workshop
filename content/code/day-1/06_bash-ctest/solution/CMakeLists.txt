@@ -24,15 +24,14 @@ target_link_libraries(cpp_test PRIVATE sum_integers)
 enable_testing()
 
 # define tests
-add_test(
-  NAME cpp_test
-  COMMAND $<TARGET_FILE:cpp_test>
-  )
+add_test(NAME cpp_test COMMAND $<TARGET_FILE:cpp_test>)
 
 # run the main executable through a shell script
 find_program(BASH_EXECUTABLE NAMES bash REQUIRED)
 
 add_test(
-  NAME bash_test
-  COMMAND ${BASH_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test.sh $<TARGET_FILE:sum_up>
-  )
+    NAME bash_test
+    COMMAND
+        ${BASH_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test.sh
+        $<TARGET_FILE:sum_up>
+)

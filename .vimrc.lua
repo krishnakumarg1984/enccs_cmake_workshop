@@ -12,9 +12,10 @@ local diagnostics = null_ls.builtins.diagnostics
 -- list of globally installed sources in $PATH (not those installed with ':FInstall')
 null_ls.register {
   -- diagnostics.codespell,
-  -- diagnostics.shellcheck.with { diagnostics_format = "[#{c}] #{m} (#{s})" },
+  -- diagnostics.pycodestyle,
+  -- diagnostics.pylint,
+  -- formatting.cmake_format,
   -- formatting.codespell,
-  -- formatting.shfmt,
   -- null_ls.builtins.code_actions.cspell,
   -- null_ls.builtins.hover.dictionary,
   diagnostics.buf,
@@ -27,13 +28,19 @@ null_ls.register {
   },
   diagnostics.cpplint,
   diagnostics.gitlint,
+  diagnostics.mypy,
   diagnostics.protolint,
+  diagnostics.pylama,
+  diagnostics.ruff,
+  diagnostics.shellcheck.with { diagnostics_format = "[#{c}] #{m} (#{s})" },
+  formatting.black,
   formatting.buf,
   formatting.clang_format,
-  -- formatting.cmake_format,
   formatting.gersemi,
   formatting.protolint,
+  formatting.shfmt.with { extra_args = { "-i", "2", "-ci" } },
   formatting.stylua,
+  formatting.usort,
 }
 null_ls.enable {}
 
@@ -50,7 +57,6 @@ null_ls.enable {}
 -- formatting.perltidy,
 -- formatting.reorder_python_imports,
 -- formatting.rustfmt,
--- formatting.shfmt.with { extra_args = { "-i", "2", "-ci" } },
 -- formatting.sqlfluff,
 -- formatting.standardrb,
 -- formatting.styler, -- needs the 'R' command to be in $PATH
@@ -101,7 +107,7 @@ nvim_lint.linters_by_ft = {
   cpp = { "flawfinder" },
   java = { "checkstyle" },
   latex = { "lacheck" },
-  python = { "pycodestyle" },
+  -- python = { "pycodestyle" },
   tex = { "lacheck" },
   rst = { "rstlint" },
 }

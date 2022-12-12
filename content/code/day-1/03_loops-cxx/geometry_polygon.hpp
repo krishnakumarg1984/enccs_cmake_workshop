@@ -1,7 +1,5 @@
 #pragma once
 
-namespace geometry {
-namespace area {
+namespace geometry::area {
 double polygon(int nSides, double side);
-}
-} // namespace geometry
+}  // namespace geometry::area

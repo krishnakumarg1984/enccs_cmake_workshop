@@ -1,7 +1,5 @@
 #pragma once
 
-namespace geometry {
-namespace area {
+namespace geometry::area {
 double square(double l);
-}
-} // namespace geometry
+}  // namespace geometry::area

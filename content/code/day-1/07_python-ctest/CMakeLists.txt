@@ -24,30 +24,33 @@ target_link_libraries(cpp_test PRIVATE sum_integers)
 enable_testing()
 
 # define tests
-add_test(
-  NAME cpp_test
-  COMMAND $<TARGET_FILE:cpp_test>
-  )
+add_test(NAME cpp_test COMMAND $<TARGET_FILE:cpp_test>)
 
 # run the main executable through a shell script
 find_program(BASH_EXECUTABLE NAMES bash REQUIRED)
 
 add_test(
-  NAME bash_test
-  COMMAND ${BASH_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test.sh $<TARGET_FILE:sum_up>
-  )
+    NAME bash_test
+    COMMAND
+        ${BASH_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test.sh
+        $<TARGET_FILE:sum_up>
+)
 
-# FIXME find the Python interpreter
-find_package(...)
+# find the Python interpreter
+find_package(Python REQUIRED)
 
-# FIXME add a test run through test.py 
+# add a long-running test run through test.py
 add_test(
-  NAME python_test_long
-  COMMAND ... ... --executable $<TARGET_FILE:sum_up>
-  )
+    NAME python_test_long
+    COMMAND
+        ${Python_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/test.py" --executable
+        $<TARGET_FILE:sum_up>
+)
 
-# FIXME add another test run through test.py, with options 
+# add another test run through test.py, with options
 add_test(
-  NAME python_test_short
-  COMMAND ... ... --executable $<TARGET_FILE:sum_up>
-  )
+    NAME python_test_short
+    COMMAND
+        ${Python_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/test.py" --short
+        --executable $<TARGET_FILE:sum_up>
+)
