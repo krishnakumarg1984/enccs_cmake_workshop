@@ -2,7 +2,9 @@
 cmake_minimum_required(VERSION 3.18)
 
 # project name, in this case no language required
-project(OS LANGUAGES NONE)
+project(OS
+  LANGUAGES NONE
+)
 
 # print custom message depending on the operating system
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")

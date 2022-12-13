@@ -2,7 +2,9 @@
 cmake_minimum_required(VERSION 3.18)
 
 # project name and language
-project(sys_preproc LANGUAGES CXX)
+project(sys_preproc
+  LANGUAGES CXX
+)
 
 # define executable and its source file
 add_executable(hello-world hello-world.cpp)
