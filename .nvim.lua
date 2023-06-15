@@ -38,8 +38,9 @@ if vim.fn.readfile(cppcheck_suppressions_filename) == 1 then
   cppcheck_suppressions_filename_arg = "--suppressions-list=" .. cppcheck_suppressions_filename
 end
 
-null_ls.register {
-  diagnostics.cppcheck.with {
+null_ls.register({
+  diagnostics.cmake_lint,
+  diagnostics.cppcheck.with({
     extra_args = {
       cppcheck_clang_arg,
       cppcheck_builddir_arg,
@@ -48,18 +49,19 @@ null_ls.register {
       "--inline-suppr",
       "--language=c++",
       "--enable=all",
+      "--suppress=missingIncludeSystem",
       -- "--addon=threadsafety.py",
     },
-  },
+  }),
   -- diagnostics.clang_check, -- sometimes flags certain warnings with higher severity (i.e. as errors)
-  -- diagnostics.cppcheck,
   diagnostics.cpplint,
-  diagnostics.shellcheck.with { diagnostics_format = "[#{c}] #{m} (#{s})" },
+  diagnostics.shellcheck.with({ diagnostics_format = "[#{c}] #{m} (#{s})" }),
   formatting.clang_format,
+  formatting.gersemi,
   formatting.shfmt,
   formatting.stylua,
-}
-null_ls.enable {}
+})
+null_ls.enable({})
 
 -- Other project-specific 'diagnostic-linters' and 'formatters' to consider {{{
 -- formatting.asmformat,
@@ -128,9 +130,9 @@ nvim_lint.linters_by_ft = {
   rst = { "rstlint" },
 }
 
-local utils = require "astronvim.utils"
+local utils = require("astronvim.utils")
 
-if vim.fn.executable "clang-tidy" == 1 then
+if vim.fn.executable("clang-tidy") == 1 then
   -- print "clang-tidy is installed"
   utils.list_insert_unique(nvim_lint.linters_by_ft.cpp, "clangtidy")
 end
@@ -141,7 +143,7 @@ end
 -- end
 
 -- vim.cmd [[autocmd BufWritePost * lua require('lint').try_lint()]]
-vim.cmd [[
+vim.cmd([[
 autocmd BufReadPost * lua require('lint').try_lint()
 autocmd BufWritePost * lua require('lint').try_lint()
-]]
+]])

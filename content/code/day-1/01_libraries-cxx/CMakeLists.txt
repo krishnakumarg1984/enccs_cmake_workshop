@@ -1,5 +1,5 @@
 # set minimum cmake version
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.26.4)
 
 # declare project giving project name and language
 project(MyLibrary LANGUAGES CXX)
