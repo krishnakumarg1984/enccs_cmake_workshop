@@ -2,9 +2,7 @@
 cmake_minimum_required(VERSION 3.18)
 
 # project name
-project(ctest-cost
-  LANGUAGES NONE
-)
+project(ctest-cost LANGUAGES NONE)
 
 # detect python
 find_package(Python REQUIRED)

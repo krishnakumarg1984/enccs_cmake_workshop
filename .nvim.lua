@@ -30,7 +30,7 @@ if vim.fn.exists(compilation_database_filename) == 1 then
 end
 
 local cppcheck_suppressions_filename = "cppcheck_suppressions.txt"
-if vim.fn.exists(cppcheck_suppressions_filename) == 0 then
+if vim.fn.filereadable(cppcheck_suppressions_filename) == 0 then
   vim.fn.writefile({ "" }, cppcheck_suppressions_filename, "b")
 end
 local cppcheck_suppressions_filename_arg = ""

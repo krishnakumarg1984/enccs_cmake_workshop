@@ -26,10 +26,11 @@ enable_testing()
 # define tests
 add_test(NAME cpp_test COMMAND $<TARGET_FILE:cpp_test>)
 
-# find the bash executable and save its location to the BASH_EXECUTABLE variable
+# find the 'bash' executable and save its location to the BASH_EXECUTABLE variable
 find_program(BASH_EXECUTABLE NAMES bash REQUIRED)
 
 # FIXME add a test running the test.sh shell script
+# add a test running the test.sh shell script
 add_test(
     NAME bash_test
     COMMAND
