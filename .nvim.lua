@@ -9,39 +9,55 @@ end
 local formatting = null_ls.builtins.formatting
 local diagnostics = null_ls.builtins.diagnostics
 
--- list of globally installed sources in $PATH (not those installed with ':FInstall')
+local cppcheck_clang_arg = ""
+-- if vim.fn.executable "clang" == 1 then
+--   cppcheck_clang_arg = "--clang"
+-- end
+
+local cppcheck_builddir_name = "cppcheck_build"
+if vim.fn.isdirectory(cppcheck_builddir_name) == 0 then
+  vim.fn.mkdir(cppcheck_builddir_name)
+end
+local cppcheck_builddir_arg = ""
+if vim.fn.isdirectory(cppcheck_builddir_name) == 1 then
+  cppcheck_builddir_arg = "--cppcheck-build-dir=" .. cppcheck_builddir_name
+end
+
+local cppcheck_project_arg = ""
+local compilation_database_filename = "compile_commands.json"
+if vim.fn.exists(compilation_database_filename) == 1 then
+  cppcheck_project_arg = "--project=" .. compilation_database_filename
+end
+
+local cppcheck_suppressions_filename = "cppcheck_suppressions.txt"
+if vim.fn.exists(cppcheck_suppressions_filename) == 0 then
+  vim.fn.writefile({ "" }, cppcheck_suppressions_filename, "b")
+end
+local cppcheck_suppressions_filename_arg = ""
+if vim.fn.readfile(cppcheck_suppressions_filename) == 1 then
+  cppcheck_suppressions_filename_arg = "--suppressions-list=" .. cppcheck_suppressions_filename
+end
+
 null_ls.register {
-  -- diagnostics.codespell,
-  -- diagnostics.pycodestyle,
-  -- diagnostics.pylint,
-  -- formatting.cmake_format,
-  -- formatting.codespell,
-  -- null_ls.builtins.code_actions.cspell,
-  -- null_ls.builtins.hover.dictionary,
-  diagnostics.buf,
-  diagnostics.clang_check.with {
-    extra_args = { "-x c++" },
-  },
-  diagnostics.cmake_lint,
   diagnostics.cppcheck.with {
-    extra_args = { "-std=c++20" },
+    extra_args = {
+      cppcheck_clang_arg,
+      cppcheck_builddir_arg,
+      cppcheck_project_arg,
+      cppcheck_suppressions_filename_arg,
+      "--inline-suppr",
+      "--language=c++",
+      "--enable=all",
+      -- "--addon=threadsafety.py",
+    },
   },
+  -- diagnostics.clang_check, -- sometimes flags certain warnings with higher severity (i.e. as errors)
+  -- diagnostics.cppcheck,
   diagnostics.cpplint,
-  diagnostics.gitlint,
-  diagnostics.mypy,
-  diagnostics.protolint,
-  diagnostics.pylama,
-  diagnostics.ruff,
   diagnostics.shellcheck.with { diagnostics_format = "[#{c}] #{m} (#{s})" },
-  formatting.black,
-  formatting.buf,
   formatting.clang_format,
-  formatting.fprettify,
-  formatting.gersemi,
-  formatting.protolint,
-  formatting.shfmt.with { extra_args = { "-i", "2", "-ci" } },
+  formatting.shfmt,
   formatting.stylua,
-  formatting.usort,
 }
 null_ls.enable {}
 
@@ -50,6 +66,7 @@ null_ls.enable {}
 -- formatting.bibclean,
 -- formatting.brittany,
 -- formatting.format_r, -- needs the 'R' command to be in $PATH
+-- formatting.fprettify,
 -- formatting.goformat,
 -- formatting.goimports,
 -- formatting.latexindent,
@@ -57,6 +74,7 @@ null_ls.enable {}
 -- formatting.perltidy,
 -- formatting.reorder_python_imports,
 -- formatting.rustfmt,
+-- formatting.shfmt.with { extra_args = { "-i", "2", "-ci" } },
 -- formatting.sqlfluff,
 -- formatting.standardrb,
 -- formatting.styler, -- needs the 'R' command to be in $PATH
@@ -100,15 +118,30 @@ if not status_ok_nvim_lint then
   return
 end
 nvim_lint.linters_by_ft = {
-  -- c = { "clangtidy", "clazy", "flawfinder" },
-  c = { "clazy", "flawfinder" },
   cmake = { "cmakelint" },
   -- cpp = { "clangtidy", "flawfinder" },
-  cpp = { "flawfinder" },
+  cpp = {},
   java = { "checkstyle" },
   latex = { "lacheck" },
-  -- python = { "pycodestyle" },
+  python = { "pycodestyle" },
   tex = { "lacheck" },
   rst = { "rstlint" },
 }
-vim.cmd [[autocmd BufWritePost * lua require('lint').try_lint()]]
+
+local utils = require "astronvim.utils"
+
+if vim.fn.executable "clang-tidy" == 1 then
+  -- print "clang-tidy is installed"
+  utils.list_insert_unique(nvim_lint.linters_by_ft.cpp, "clangtidy")
+end
+-- if vim.fn.executable "flawfinder" == 1 then
+--   -- print "flawfinder is installed"
+--   utils.list_insert_unique(nvim_lint.linters_by_ft.cpp, "flawfinder")
+--   utils.list_insert_unique(nvim_lint.linters_by_ft.c, "flawfinder")
+-- end
+
+-- vim.cmd [[autocmd BufWritePost * lua require('lint').try_lint()]]
+vim.cmd [[
+autocmd BufReadPost * lua require('lint').try_lint()
+autocmd BufWritePost * lua require('lint').try_lint()
+]]
